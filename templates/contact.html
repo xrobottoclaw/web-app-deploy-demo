@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact - FlaskApp{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h4 mb-0">Contact Us</h2>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted mb-4">Have questions? We'd love to hear from you. Fill out the form below and we'll get back to you as soon as possible.</p>
+
+                <form id="contactForm" method="POST" action="{{ url_for('contact') }}" novalidate>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" required
+                               value="{{ request.form.name if request.method == 'POST' else '' }}"
+                               placeholder="Enter your full name">
+                        <div class="invalid-feedback">Please enter your name</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" required
+                               value="{{ request.form.email if request.method == 'POST' else '' }}"
+                               placeholder="you@example.com">
+                        <div class="invalid-feedback">Please enter a valid email address</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="subject" name="subject" required
+                               value="{{ request.form.subject if request.method == 'POST' else '' }}"
+                               placeholder="What is this about?">
+                        <div class="invalid-feedback">Please enter a subject</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="message" name="message" rows="5" required
+                                  placeholder="Tell us how we can help...">{{ request.form.message if request.method == 'POST' else '' }}</textarea>
+                        <div class="invalid-feedback">Please enter your message</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                            <span class="btn-text">Send Message</span>
+                            <span class="btn-loading d-none"><span class="spinner-border spinner-border-sm me-2"></span>Sending...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success message info -->
+        <div class="text-center mt-3 text-muted small">
+            <p>Or email us directly at <a href="mailto:hello@flaskapp.example">hello@flaskapp.example</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+
+    // Client-side validation
+    form.addEventListener('submit', function(e) {
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+        } else {
+            // Show loading state
+            btnText.classList.add('d-none');
+            btnLoading.classList.remove('d-none');
+            submitBtn.disabled = true;
+        }
+        form.classList.add('was-validated');
+    });
+
+    // Real-time validation feedback
+    const inputs = form.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.checkValidity()) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            } else {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            }
+        });
+
+        input.addEventListener('input', function() {
+            if (this.classList.contains('is-invalid') && this.checkValidity()) {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
