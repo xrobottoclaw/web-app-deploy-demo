@@ -1,0 +1,38 @@
+# Version control
+.git
+.gitignore
+
+# Python bytecode / caches
+__pycache__
+**/__pycache__
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.cache
+
+# Virtual environments
+.venv
+venv
+env
+venv/
+
+# Secrets / local config
+.env
+.env.*
+*.local
+
+# Tests (not needed in the production image)
+tests
+test
+tests/
+
+# Local tooling / artifacts
+Dockerfile
+docker-compose.yml
+docker-compose.*.yml
+*.md
+*.log
+cookies*.txt
